@@ -14,11 +14,11 @@ function love.load()
     love.window.setMode(WIN_WIDTH, WIN_HEIGHT)
 
     -- Paddle and ball constants
-    local PADDLE_WIDTH = 20
-    local PADDLE_HEIGHT = 100
-    local BALL_SIZE = 20
-    local BALL_SPEED = 200
-    speed_increase = 1.05
+    PADDLE_WIDTH = 20
+    PADDLE_HEIGHT = 100
+    BALL_SIZE = 20
+    BALL_SPEED = 200
+    speed_increase = 1.10
 
     -- Scores
     score_1 = 0
@@ -70,6 +70,15 @@ local function reset_ball()
 end
 
 
+local function reset_pladdles()
+    player_1.x = 50
+    player_1.y = 250
+
+    player_2.x = 800 - 50 - PADDLE_WIDTH
+    player_2.y = 250
+end
+
+
 function love.update(dt)
     -- Stop all game logic when game is over
     if game_over then
@@ -105,15 +114,15 @@ function love.update(dt)
         ball.dy = -ball.dy -- Reverse direction
     end
 
-    -- Collision with player 1
+    -- Ball collision with player 1
     if check_collision(ball, player_1) then
         ball.x = player_1.x + player_1.width -- Prevent overlap
         ball.dx = -ball.dx * speed_increase -- Reverse direction
     end
 
-    -- Collision with player 2
+    -- Ball collision with player 2
     if check_collision(ball, player_2) then
-        ball.x = player_2.x - ball.size
+        ball.x = player_2.x - ball.size -- Prevent overlap
         ball.dx = -ball.dx * speed_increase -- Reverse direction
     end
 
@@ -147,6 +156,7 @@ function love.keypressed(key)
         game_over = false
         winner = nil
         reset_ball()
+        reset_pladdles()
     end
 end
 
@@ -182,6 +192,4 @@ function love.draw()
     love.graphics.setFont(scoreFont)
     love.graphics.print(score_1, 300, 50)
     love.graphics.print(score_2, 470, 50)
-
-
 end
