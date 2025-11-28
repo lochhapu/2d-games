@@ -1,5 +1,5 @@
 -- State variables
-local winning_score = 5
+winning_score = 5
 game_over = false
 winner = nil
 
